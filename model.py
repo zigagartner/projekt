@@ -9,7 +9,7 @@ STEVILO_STOLPCEV = 7
 class Igra:
 
     def __init__(self, polje):
-        self.polje = np.zeros((6, 7))
+        self.polje = np.zeros([6, 7], dtype = int)
     
     def stevilo_poteze(self):
         poteza = 1
