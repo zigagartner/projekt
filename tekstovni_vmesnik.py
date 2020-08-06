@@ -1,6 +1,7 @@
 import model
 import math
 import minimax
+import random
 
 def izpis_zmage(igralec):
     return f"Igre je konec, zmagal je igralec {igralec}."
@@ -46,16 +47,18 @@ def po_koncani_igri():
 def pozeni_vmesnik():
     igra = model.nova_igra()
     konec_igre = False
+    poteza = random.choice([0, 1])
     print(igra.polje)
     while not konec_igre:
-        if igra.stevilo_poteze() % 2 != 0:
+        if poteza % 2 != 0:
             stolpec = zahtevaj_vnos(1)
             if igra.ali_je_prostor(stolpec):
                 vrsta = igra.vnos_izbire_v_vrstico(stolpec)
                 igra.dodaj_v_polje(vrsta, stolpec, 1)
                 if igra.zmagovalna_poteza(1):
                     print(izpis_zmage(1))
-                    konec_igre = True                
+                    konec_igre = True   
+                poteza += 1             
         else:
             stolpec = zahtevaj_vnos(2)
             if igra.ali_je_prostor(stolpec):
@@ -64,6 +67,7 @@ def pozeni_vmesnik():
                 if igra.zmagovalna_poteza(2):
                     print(izpis_zmage(2))
                     konec_igre = True
+                poteza += 1
         print(igra.polje)
         if konec_igre == True:
             po_koncani_igri()
@@ -73,17 +77,19 @@ def pozeni_vmesnik_racunalnik():
     igra = model.nova_igra()
     konec_igre = False
     print(igra.polje)
+    poteza = random.choice([0, 1])
     while not konec_igre:
         polje = igra.polje
-        if igra.stevilo_poteze() % 2 != 0:
+        if poteza % 2 != 0:
             stolpec = zahtevaj_vnos(1)
             if igra.ali_je_prostor(stolpec):
                 vrsta = igra.vnos_izbire_v_vrstico(stolpec)
                 igra.dodaj_v_polje(vrsta, stolpec, 1)
+                poteza += 1
                 if igra.zmagovalna_poteza(1):
                     print(izpis_zmage(1))
                     konec_igre = True
-                print(polje)  
+            print(igra.polje)
         else:
             stolpec = minimax.minimax(polje, 4, -math.inf, math.inf, True)[0]
             if igra.ali_je_prostor(stolpec):
@@ -92,7 +98,9 @@ def pozeni_vmesnik_racunalnik():
                 if igra.zmagovalna_poteza(2):
                     print(izpis_zmage(2))
                     konec_igre = True
-        print(polje)
+                print(f"Računalnik je izbral {stolpec}.")
+                print(igra.polje)
+                poteza += 1
         if konec_igre == True:
             po_koncani_igri()
      
@@ -100,9 +108,9 @@ def zazeni_igro():
     print("Dobrodošli v igri štiri v vrsto!")
     igralci = stevilo_igralcev()
     if igralci == 1:
-        return pozeni_vmesnik()
-    elif igralci == 2:
         return pozeni_vmesnik_racunalnik()
+    elif igralci == 2:
+        return pozeni_vmesnik()
 
 zazeni_igro()
 
