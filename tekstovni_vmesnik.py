@@ -104,7 +104,6 @@ def zazeni_igro():
     elif igralci == 2:
         return pozeni_vmesnik_racunalnik()
 
-
 zazeni_igro()
 
         
