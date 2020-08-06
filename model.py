@@ -2,6 +2,7 @@ import numpy as np
 import json
 import random
 
+
 STEVILO_VRSTIC = 6
 STEVILO_STOLPCEV = 7
 
@@ -30,7 +31,7 @@ class Igra:
         return self.polje[0][stolpec] == 0
            
 
-    def dodaj_v_polje(self, stolpec, vrstica, kos):
+    def dodaj_v_polje(self, vrstica, stolpec, kos):
         self.polje[vrstica][stolpec] = kos
 
     def zmagovalna_poteza(self, kos):
@@ -53,33 +54,9 @@ class Igra:
         for s in range(STEVILO_STOLPCEV - 3):
             for v in range(STEVILO_VRSTIC - 3):
                 if self.polje[v][s] == kos and self.polje[v + 1][s + 1] == kos and self.polje[v + 2][s + 2] == kos and self.polje[v + 3][s + 3] == kos:
-                    return True   
+                    return True      
         
 
 def nova_igra():
     stevilo_igre = random.choice(range(1001))
-    return Igra(stevilo_igre)
-
-
-
-    
-
-
-    
-
-
-
-
-
-
-
-
-
-    
-    
-
-                   
-
-
-
-    
+    return Igra(stevilo_igre)   
