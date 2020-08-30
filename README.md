@@ -6,6 +6,6 @@ Program v repozitoriju omogoča igranje igre štiri v vrsto. Igro lahko igrata d
 <h2>Navodila za igranje:</h2>
 **1.** Datoteke iz repozitorija si naložite na svoj računalnik
 **2.** Če želite igro igrati prek tekstovnega vmesnika, poženite tekstovni vmesnik.
-**3.** Če želite igro igrati prek spletnega vmesnika, poženite spletni vmesnik in pritisnite s kombinacijo ctrl + desni klik pritisnite na http://127.0.0.1:8080/
+**3.** Če želite igro igrati prek spletnega vmesnika, poženite spletni vmesnik in s kombinacijo ctrl + desni klik pritisnite na http://127.0.0.1:8080/
 
           
