@@ -1,0 +1,25 @@
+% rebase('base.html')
+<div class="jumbotron" align='center'>
+    <div class="container">
+        <h1 align='center'>Dobrodošli!</h1>
+        <p>
+            Spletna stran vam omogoča igranje igre štiri v vrsto. Za <i>enoigralski način</i> pritisnite gumb <kbd>Nova igra 1-igralec</kbd>,
+            za <i>dvoigralski</i>, pa gumb <kbd>Nova igra 2-igralca</kbd>. Za <i>ogled zgodovine</i> pritisnite gumb <kbd>Zgodovina</kbd>, za <i>vrnitev na začetno
+            stran</i> pa gumb <kbd>Začetna stran</kbd>.
+        </p>
+    </div>
+    <div class='jumbotron' align='center'>
+        <div class='container'>
+            <p>
+                <form action='/nova_igra_1/' method='POST'>
+                    <button type='submit' class='btn btn-danger btn-lg'>Nova igra 1-igralec</button>
+                </form>  
+            </p>
+            <p>
+                <form action='/nova_igra_2/' method='POST'>
+                    <button type='submit' class='btn btn-danger btn-lg'>Nova igra 2-igralca</button>
+                </form>
+            </p>
+        </div>
+    </div>
+</div>

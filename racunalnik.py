@@ -9,6 +9,8 @@ DOLZINA_DELA = 4
 PRAZNO_POLJE = 0
 STEVILO_VRSTIC = 6
 STEVILO_STOLPCEV = 7
+
+
 def zmagovalna_poteza(polje, kos):
     #Vodoravno
     for s in range(STEVILO_STOLPCEV - 3): 
@@ -64,22 +66,36 @@ def oceni_del_polja(del_polja, kos):
     elif del_polja.count(kos) == 2 and del_polja.count(PRAZNO_POLJE) == 2:
         ocena += 2
     elif del_polja.count(kos_nasprotnika) == 3 and del_polja.count(PRAZNO_POLJE) == 1:
-        ocena -= 4
+        ocena -= 25
     return ocena
+
+def najboljsa_poteza(polje, kos):
+    izbire = mozne_izbire(polje)
+    najboljsa_ocena = 0
+    najboljsi_stolpec = random.choice(izbire)
+    for stolpec in izbire:
+        vrstica = vnos_izbire_v_vrstico(polje, stolpec)
+        kopija = polje.copy()
+        dodaj_v_polje(kopija, vrstica, stolpec, kos)
+        ocena = oceni_polje(polje, kos)
+        if ocena > najboljsa_ocena:
+            najboljsa_ocena = ocena
+            najboljsi_stolpec = stolpec
+    return najboljsi_stolpec
 
 def oceni_polje(polje, kos):
     ocena = 0
     #Vodoravno
     for v in range(STEVILO_VRSTIC):
-        vrstica_seznam = [int(i) for i in list(polje[v, :])]
+        vrstica = [int(i) for i in list(polje[v, :])]
         for s in range(STEVILO_STOLPCEV - 3):
-            del_polja = vrstica_seznam[s:s + DOLZINA_DELA]
+            del_polja = vrstica[s:s + DOLZINA_DELA]
             ocena += oceni_del_polja(del_polja, kos)
     #Navpicno
     for s in range(STEVILO_STOLPCEV):
-        stolpec_seznam = [int(i) for i in list(polje[:, s])]
+        stolpec = [int(i) for i in list(polje[:, s])]
         for v in range(STEVILO_VRSTIC - 3):
-            del_polja = stolpec_seznam[v: v + DOLZINA_DELA]
+            del_polja = stolpec[v: v + DOLZINA_DELA]
             ocena += oceni_del_polja(del_polja, kos)
     #Diagonalno navzgor
     for v in range(3, STEVILO_VRSTIC):
@@ -97,47 +113,3 @@ def oceni_polje(polje, kos):
     ocena += stevilo_kosov_v_sredini * 3
     return ocena
 
-def minimax(polje, globina, alfa, beta, MaxIgralca):
-    vse_mozne_izbire = mozne_izbire(polje)
-    je_koncno = koncno_stanje(polje)
-    if globina == 0 or je_koncno:
-        if je_koncno:
-            if zmagovalna_poteza(polje, RACUNALNIK):
-                return (None, 100000000000000)
-            elif zmagovalna_poteza(polje, IGRALEC_1):
-                return (None, -10000000000000)
-            else:
-                return (None, 0)
-        else:
-            return (None, oceni_polje(polje, RACUNALNIK))
-    if MaxIgralca:
-        vrednost = -math.inf
-        stolp = random.choice(vse_mozne_izbire)
-        for s in vse_mozne_izbire:
-            vrstica = vnos_izbire_v_vrstico(polje, s)
-            kopija_polja = polje.copy()
-            dodaj_v_polje(kopija_polja, vrstica, s, RACUNALNIK)
-            nova_ocena = minimax(kopija_polja, globina - 1, alfa, beta, False)[1]
-            if nova_ocena > vrednost:
-                vrednost = nova_ocena
-                stolp = s
-            alfa = max(alfa, vrednost)
-            if alfa >= beta:
-                break
-        return stolp, vrednost
-    else:
-        vrednost = math.inf
-        stolp = random.choice(vse_mozne_izbire)
-        for s in vse_mozne_izbire:
-            vrstica = vnos_izbire_v_vrstico(polje, s)
-            kopija_polja = polje.copy()
-            dodaj_v_polje(kopija_polja, vrstica, s, IGRALEC_1)
-            nova_ocena = minimax(kopija_polja, globina - 1, alfa, beta, True)[1]
-            if nova_ocena < vrednost:
-                vrednost = nova_ocena 
-                stolp = s
-            beta = min(beta, vrednost)
-            if alfa >= beta:
-                break
-        return stolp, vrednost
-    

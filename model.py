@@ -1,5 +1,4 @@
 import numpy as np
-import json
 import random
 
 
@@ -9,8 +8,10 @@ STEVILO_STOLPCEV = 7
 
 class Igra:
 
-    def __init__(self, polje):
+    def __init__(self, stevilo_igre):
+        self.stevilo_igre = stevilo_igre
         self.polje = np.zeros([6, 7], dtype = int)
+        self.zacetna_poteza = int(random.choice([0, 1]))
     
     def vnos_izbire_v_vrstico(self, stolpec):
         proste_vrstice = []
@@ -22,9 +23,15 @@ class Igra:
     def ali_je_prostor(self, stolpec):
         return self.polje[0][stolpec] == 0
            
-
     def dodaj_v_polje(self, vrstica, stolpec, kos):
         self.polje[vrstica][stolpec] = kos
+    
+    def mozne_poteze(self):
+        poteze = []
+        for stolpec in self.polje[0]:
+            if stolpec == 0:
+                poteze.append(stolpec)
+        return poteze
 
     def zmagovalna_poteza(self, kos):
         #Vodoravno
@@ -46,19 +53,46 @@ class Igra:
         for s in range(STEVILO_STOLPCEV - 3):
             for v in range(STEVILO_VRSTIC - 3):
                 if self.polje[v][s] == kos and self.polje[v + 1][s + 1] == kos and self.polje[v + 2][s + 2] == kos and self.polje[v + 3][s + 3] == kos:
-                    return True      
+                    return True    
+
+    def celotna_poteza(self, stolpec, kos):
+        if self.ali_je_prostor(stolpec):
+            v = self.vnos_izbire_v_vrstico(stolpec)
+            self.dodaj_v_polje(v, stolpec, kos)
+
+    def stevilo_poteze(self):
+        stevilo_poteze  = self.zacetna_poteza
+        for vrstica in self.polje:
+            for element in vrstica:
+                if element != 0:
+                    stevilo_poteze += 1
+        return int(stevilo_poteze)
+
+    def igralec_na_vrsti(self):
+        if self.stevilo_poteze() % 2 != 0:
+            return 1
+        else:
+            return 2
+
+
+def prosti_stolpci(polje):
+    stolpci = []
+    for stolpec in polje[0]:
+        if stolpec == 0:
+            stolpci.append(stolpec)
+    return stolpci
         
 
 def nova_igra():
     stevilo_igre = random.choice(range(1001))
-    return Igra(stevilo_igre) 
+    return Igra(stevilo_igre)
 
 
-class Shranjevanje_iger:
-    def __init__(self, datoteka_s_stanjem):
-       self.datoteka_s_stanjem = datoteka_s_stanjem
-       self.nalozi_igre_iz_datoteke()
-       
+class Shramba:
+
+    def __init__(self):
+        self.igre = {}
+
     def prost_id_igre(self):
         if len(self.igre) == 0:
             return 0
@@ -66,26 +100,41 @@ class Shranjevanje_iger:
             return max(self.igre.keys()) + 1
 
     def nova_igra(self):
-        nov_id = self.prost_id_igre()
+        id_igre = self.prost_id_igre()
         igra = nova_igra()
-        self.igre[nov_id] = igra
-        return nov_id
+        self.igre[id_igre] = igra, igra.polje
+        return id_igre
 
-    def nova_izbira(self, id_igre, vrstica,  stolpec, kos):
-        igra = self.igre[id_igre]
-        novo_stanje = igra.dodaj_v_polje(vrstica, stolpec, kos)
-        self.igre[id_igre] = novo_stanje
-
-    def nalozi_igre_iz_datoteke(self):
-        with open(self.datoteka_s_stanjem, 'r', encoding='utf-8') as f:
-            igre = json.load(f)
-            self.igre = {int(id_igre): (Igra(polje)) for id_igre, (polje) in igre.items()}
-
-    def zapisi_igre_v_datoteko(self):
-        with open(self.datoteka_s_stanjem, 'w', encoding='utf-8') as f:
-            igre = {id_igre: (polje) for id_igre, (polje) in self.igre.items()}
-            json.dump(igre, f, ensure_ascii=False)
+    
 
 
 
-  
+
+
+            
+
+
+
+
+
+
+    
+    
+
+        
+
+
+
+
+
+
+    
+
+
+
+    
+
+
+
+
+
